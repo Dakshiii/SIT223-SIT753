@@ -8,6 +8,13 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+        stage('Code Analysis') {
+        steps {
+            withSonarQubeEnv('SonarQube') {
+                sh 'mvn clean verify sonar:sonar'
+            }
+            }
+        }
         stage('Test') {
             steps {
                 echo 'Running tests...'
