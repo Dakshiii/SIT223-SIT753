@@ -8,6 +8,14 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+        stage('Unit and Integration Tests') {
+            steps {
+                script {
+                    // Running unit and integration tests
+                    sh 'mvn test'
+                }
+            }
+        }
         stage('Code Analysis') {
         steps {
             withSonarQubeEnv('SonarQube') {
