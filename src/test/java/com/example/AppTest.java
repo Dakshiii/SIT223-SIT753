@@ -6,6 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AppTest {
     @Test
     public void testApp() {
-        assertTrue(true);  // Simple test to check if the pipeline works
+        assertTrue(true);
     }
 }
