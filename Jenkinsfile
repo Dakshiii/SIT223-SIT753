@@ -35,7 +35,7 @@ pipeline {
                 echo 'Performing security scan with OWASP ZAP'
                 script {
                     // Example of running a security scan tool
-                    sh '/home/darkfoxy/Documents/ass/run_security_scan.sh'
+                    sh './run_security_scan.sh'
                 }
             }
         }
