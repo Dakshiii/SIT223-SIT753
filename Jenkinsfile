@@ -11,7 +11,6 @@ pipeline {
         stage('Unit and Integration Tests') {
             steps {
                 script {
-                    // Running unit and integration tests
                     sh 'mvn test'
                 }
             }
@@ -20,7 +19,15 @@ pipeline {
         steps {
             withSonarQubeEnv('SonarQube') {
                 sh 'mvn clean verify sonar:sonar'
+                }
             }
+        }
+        stage('Security Scan') {
+            steps {
+                script {
+                    // Using OWASP ZAP for security scanning
+                    sh '/home/darkfoxy/Documents/ass/run_security_scan.sh'
+                }
             }
         }
         stage('Test') {
