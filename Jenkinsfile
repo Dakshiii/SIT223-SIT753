@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Using OWASP ZAP for security scanning
-                    sh '/home/darkfoxy/Documents/ass/run_security_scan.sh'
+                    sh './run_security_scan.sh'
                 }
             }
         }
