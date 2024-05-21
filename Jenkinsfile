@@ -72,7 +72,7 @@ pipeline {
                         to: 'padni191@gmail.com',
                         subject: "SUCCESS: Pipeline completed successfully",
                         body: "The pipeline has completed successfully. Please find the console log attached.",
-                        attachmentsPattern: logFile
+                        attachmentsPattern: '**/console.log'
                     )
                 }
             }
@@ -88,7 +88,7 @@ pipeline {
                         to: 'padni191@gmail.com',
                         subject: "FAILURE: Pipeline failed",
                         body: "The pipeline has failed. Please find the console log attached.",
-                        attachmentsPattern: logFile
+                        attachmentsPattern: '**/console.log'
                     )
                 }
             }
