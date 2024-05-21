@@ -63,10 +63,13 @@ pipeline {
     post {
         success {
             script {
-                withCredentials([string(credentialsId: 'JENKINS_USER', variable: 'JENKINS_USER'), string(credentialsId: 'JENKINS_TOKEN', variable: 'JENKINS_TOKEN')]) {
+                withCredentials([
+                    string(credentialsId: 'JENKINS_USER', variable: 'USER'),
+                    string(credentialsId: 'JENKINS_TOKEN', variable: 'TOKEN')
+                ]) {
                     def logFile = "${env.WORKSPACE}/console.log"
                     sh """
-                        curl -u $JENKINS_USER:$JENKINS_TOKEN ${env.BUILD_URL}consoleText -o ${logFile}
+                        curl -u \$USER:\$TOKEN ${env.BUILD_URL}consoleText -o ${logFile}
                     """
                     emailext (
                         to: 'padni191@gmail.com',
@@ -79,10 +82,13 @@ pipeline {
         }
         failure {
             script {
-                withCredentials([string(credentialsId: 'JENKINS_USER', variable: 'JENKINS_USER'), string(credentialsId: 'JENKINS_TOKEN', variable: 'JENKINS_TOKEN')]) {
+                withCredentials([
+                    string(credentialsId: 'JENKINS_USER', variable: 'USER'),
+                    string(credentialsId: 'JENKINS_TOKEN', variable: 'TOKEN')
+                ]) {
                     def logFile = "${env.WORKSPACE}/console.log"
                     sh """
-                        curl -u $JENKINS_USER:$JENKINS_TOKEN ${env.BUILD_URL}consoleText -o ${logFile}
+                        curl -u \$USER:\$TOKEN ${env.BUILD_URL}consoleText -o ${logFile}
                     """
                     emailext (
                         to: 'padni191@gmail.com',
