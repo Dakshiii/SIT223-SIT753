@@ -1,10 +1,8 @@
 pipeline {
     agent any
-
     tools {
         maven 'Maven 3.6.3'
     }
-
     stages {
         stage('Build') {
             steps {
@@ -18,15 +16,14 @@ pipeline {
             steps {
                 echo 'Running unit and integration tests using JUnit and Mockito'
                 script {
-                    // Run tests and generate test reports
                     sh 'mvn test'
                 }
             }
         }
         stage('Code Analysis') {
-        steps {
-            withSonarQubeEnv('SonarQube') {
-                sh 'mvn clean verify sonar:sonar'
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn clean verify sonar:sonar'
                 }
             }
         }
@@ -34,7 +31,6 @@ pipeline {
             steps {
                 echo 'Performing security scan with OWASP ZAP'
                 script {
-                    // Example of running a security scan tool
                     sh './run_security_scan.sh'
                 }
             }
@@ -66,14 +62,30 @@ pipeline {
     }
     post {
         success {
-            mail to: 'padni191@gmail.com',
-                 subject: "SUCCESS: Pipeline completed successfully",
-                 body: "The pipeline has completed successfully."
+            script {
+                def logFile = "${env.WORKSPACE}/console.log"
+                sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
+                emailext (
+                    to: 'padni191@gmail.com',
+                    subject: "SUCCESS: Pipeline completed successfully",
+                    body: "The pipeline has completed successfully. Please find the console log attached.",
+                    attachLog: true,
+                    attachmentsPattern: "${logFile}"
+                )
+            }
         }
         failure {
-            mail to: 'padni191@gmail.com',
-                 subject: "FAILURE: Pipeline failed",
-                 body: "The pipeline has failed. Please check the Jenkins logs for more details."
+            script {
+                def logFile = "${env.WORKSPACE}/console.log"
+                sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
+                emailext (
+                    to: 'padni191@gmail.com',
+                    subject: "FAILURE: Pipeline failed",
+                    body: "The pipeline has failed. Please find the console log attached.",
+                    attachLog: true,
+                    attachmentsPattern: "${logFile}"
+                )
+            }
         }
     }
 }
