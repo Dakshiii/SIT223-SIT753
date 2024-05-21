@@ -65,7 +65,9 @@ pipeline {
             script {
                 withCredentials([string(credentialsId: 'JENKINS_USER', variable: 'JENKINS_USER'), string(credentialsId: 'JENKINS_TOKEN', variable: 'JENKINS_TOKEN')]) {
                     def logFile = "${env.WORKSPACE}/console.log"
-                    sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
+                    sh """
+                        curl -u $JENKINS_USER:$JENKINS_TOKEN ${env.BUILD_URL}consoleText -o ${logFile}
+                    """
                     emailext (
                         to: 'padni191@gmail.com',
                         subject: "SUCCESS: Pipeline completed successfully",
@@ -79,7 +81,9 @@ pipeline {
             script {
                 withCredentials([string(credentialsId: 'JENKINS_USER', variable: 'JENKINS_USER'), string(credentialsId: 'JENKINS_TOKEN', variable: 'JENKINS_TOKEN')]) {
                     def logFile = "${env.WORKSPACE}/console.log"
-                    sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
+                    sh """
+                        curl -u $JENKINS_USER:$JENKINS_TOKEN ${env.BUILD_URL}consoleText -o ${logFile}
+                    """
                     emailext (
                         to: 'padni191@gmail.com',
                         subject: "FAILURE: Pipeline failed",
