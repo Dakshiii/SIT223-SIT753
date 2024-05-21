@@ -63,28 +63,30 @@ pipeline {
     post {
         success {
             script {
-                def logFile = "${env.WORKSPACE}/console.log"
-                sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
-                emailext (
-                    to: 'padni191@gmail.com',
-                    subject: "SUCCESS: Pipeline completed successfully",
-                    body: "The pipeline has completed successfully. Please find the console log attached.",
-                    attachLog: true,
-                    attachmentsPattern: "${logFile}"
-                )
+                withCredentials([string(credentialsId: 'JENKINS_USER', variable: 'JENKINS_USER'), string(credentialsId: 'JENKINS_TOKEN', variable: 'JENKINS_TOKEN')]) {
+                    def logFile = "${env.WORKSPACE}/console.log"
+                    sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
+                    emailext (
+                        to: 'padni191@gmail.com',
+                        subject: "SUCCESS: Pipeline completed successfully",
+                        body: "The pipeline has completed successfully. Please find the console log attached.",
+                        attachmentsPattern: logFile
+                    )
+                }
             }
         }
         failure {
             script {
-                def logFile = "${env.WORKSPACE}/console.log"
-                sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
-                emailext (
-                    to: 'padni191@gmail.com',
-                    subject: "FAILURE: Pipeline failed",
-                    body: "The pipeline has failed. Please find the console log attached.",
-                    attachLog: true,
-                    attachmentsPattern: "${logFile}"
-                )
+                withCredentials([string(credentialsId: 'JENKINS_USER', variable: 'JENKINS_USER'), string(credentialsId: 'JENKINS_TOKEN', variable: 'JENKINS_TOKEN')]) {
+                    def logFile = "${env.WORKSPACE}/console.log"
+                    sh "curl -u ${JENKINS_USER}:${JENKINS_TOKEN} ${env.BUILD_URL}consoleText -o ${logFile}"
+                    emailext (
+                        to: 'padni191@gmail.com',
+                        subject: "FAILURE: Pipeline failed",
+                        body: "The pipeline has failed. Please find the console log attached.",
+                        attachmentsPattern: logFile
+                    )
+                }
             }
         }
     }
